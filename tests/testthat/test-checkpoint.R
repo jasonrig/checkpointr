@@ -121,9 +121,42 @@ test_that("the expression can be forcefully re-evaluated", {
   expect_false(all(sapply(m2, round, 4) == sapply(m3, round, 4)))
 })
 
+test_that("the checking of dependent variables can be disabled", {
+  x <- rnorm(100)
+  m <- checkpoint(
+    {
+      mean(x)
+    },
+    "test_checkpoint5",
+    1
+  )
+  expect_equal(m, mean(x))
+
+  x <- rnorm(100)
+  m <- checkpoint(
+    {
+      mean(x)
+    },
+    "test_checkpoint5",
+    1
+  )
+  expect_false(m == mean(x))
+
+  m <- checkpoint(
+    {
+      mean(x)
+    },
+    "test_checkpoint5",
+    2,
+    check.deps = FALSE
+  )
+  expect_false(m == mean(x))
+})
+
 teardown({
   unlink("test_checkpoint1.dat")
   unlink("test_checkpoint2.dat")
   unlink("test_checkpoint3.dat")
   unlink("test_checkpoint4.dat")
+  unlink("test_checkpoint5.dat")
 })

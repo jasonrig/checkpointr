@@ -4,8 +4,8 @@
 \alias{checkpoint}
 \title{Evaluates an expression or loads a previously checkpointed value}
 \usage{
-checkpoint(expr, ckpt.id, ..., force = FALSE, envir = parent.frame(),
-  enclos = environment())
+checkpoint(expr, ckpt.id, ..., force = FALSE, check.deps = TRUE,
+  envir = parent.frame(), enclos = environment())
 }
 \arguments{
 \item{expr}{any valid R expression}
@@ -15,6 +15,8 @@ checkpoint(expr, ckpt.id, ..., force = FALSE, envir = parent.frame(),
 \item{...}{any one or more R objects that are monitored for changes and used to trigger re-evaluation}
 
 \item{force}{force re-evaluation of the expression}
+
+\item{check.deps}{whether or not to check the dependent variables in \code{...} for changes}
 
 \item{envir}{the environment in which \code{expr} is evaluated}
 

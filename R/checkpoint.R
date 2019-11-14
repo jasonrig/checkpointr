@@ -7,6 +7,7 @@
 #' @param ckpt.id an identifier used for the checkpointed data
 #' @param ... any one or more R objects that are monitored for changes and used to trigger re-evaluation
 #' @param force force re-evaluation of the expression
+#' @param check.deps whether or not to check the dependent variables in \code{...} for changes
 #' @param envir the environment in which \code{expr} is evaluated
 #' @param enclos the environment in which \code{expr} is substituted
 #' @return the result of running \code{expr} or the checkpointed value
@@ -18,6 +19,7 @@ checkpoint <-
            ckpt.id,
            ...,
            force = FALSE,
+           check.deps = TRUE,
            envir = parent.frame(),
            enclos = environment()) {
     # Prepare the checkpoint file name
@@ -40,7 +42,7 @@ checkpoint <-
       ckpt_hash <- tmp_env$.hash
 
       # Compare the hash to determine whether re-evaluation is necessary
-      if (deps_hash != ckpt_hash) {
+      if (check.deps && (deps_hash != ckpt_hash)) {
         message("Dependent variables have changed!")
         return(checkpoint(
           expr,
