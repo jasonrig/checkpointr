@@ -8,7 +8,8 @@ test_that("data that is checkpointed can be loaded again", {
       s <- sd(x)
       42
     },
-    "test_checkpoint1"
+    "test_checkpoint",
+    file = "checkpoint1.dat"
   )
   expect_equal(y, 42)
   expect_equal(m, mean(seq(0, 100)))
@@ -22,7 +23,8 @@ test_that("data that is checkpointed can be loaded again", {
       s <- sd(x)
       42
     },
-    "test_checkpoint1"
+    "test_checkpoint",
+    file = "checkpoint1.dat"
   )
   expect_equal(y, 42)
   expect_equal(m, mean(seq(0, 100)))
@@ -35,8 +37,9 @@ test_that("the expression is re-evaluated when the dependent variables changes",
     {
       mean(x)
     },
-    "test_checkpoint2",
-    1
+    "test_checkpoint",
+    1,
+    file = "checkpoint2.dat"
   )
   expect_equal(m, mean(x))
 
@@ -45,8 +48,9 @@ test_that("the expression is re-evaluated when the dependent variables changes",
     {
       mean(x)
     },
-    "test_checkpoint2",
-    1
+    "test_checkpoint",
+    1,
+    file = "checkpoint2.dat"
   )
   expect_false(m == mean(x))
 
@@ -54,8 +58,9 @@ test_that("the expression is re-evaluated when the dependent variables changes",
     {
       mean(x)
     },
-    "test_checkpoint2",
-    2
+    "test_checkpoint",
+    2,
+    file = "checkpoint2.dat"
   )
   expect_equal(m, mean(x))
 })
@@ -66,7 +71,8 @@ test_that("the expression is re-evaluated when the expression changes", {
     {
       mean(x)
     },
-    "test_checkpoint3"
+    "test_checkpoint",
+    file = "checkpoint3.dat"
   )
   expect_equal(m, mean(x))
 
@@ -76,7 +82,8 @@ test_that("the expression is re-evaluated when the expression changes", {
     {
       mean(x)
     },
-    "test_checkpoint3"
+    "test_checkpoint",
+    file = "checkpoint3.dat"
   )
   expect_false(m == mean(x))
 
@@ -84,7 +91,8 @@ test_that("the expression is re-evaluated when the expression changes", {
     {
       mean(y)
     },
-    "test_checkpoint3"
+    "test_checkpoint",
+    file = "checkpoint3.dat"
   )
   expect_equal(m, mean(x))
 })
@@ -94,26 +102,30 @@ test_that("the expression can be forcefully re-evaluated", {
     {
       rnorm(100)
     },
-    "test_checkpoint4"
+    "test_checkpoint",
+    file = "checkpoint4.dat"
   )
   m2 <- checkpoint(
     {
       rnorm(100)
     },
-    "test_checkpoint4"
+    "test_checkpoint",
+    file = "checkpoint4.dat"
   )
   m3 <- checkpoint(
     {
       rnorm(100)
     },
-    "test_checkpoint4",
-    force = TRUE
+    "test_checkpoint",
+    force = TRUE,
+    file = "checkpoint4.dat"
   )
   m4 <- checkpoint(
     {
       rnorm(100)
     },
-    "test_checkpoint4"
+    "test_checkpoint",
+    file = "checkpoint4.dat"
   )
 
   expect_true(all(sapply(m1, round, 4) == sapply(m2, round, 4)))
@@ -127,8 +139,9 @@ test_that("the checking of dependent variables can be disabled", {
     {
       mean(x)
     },
-    "test_checkpoint5",
-    1
+    "test_checkpoint",
+    1,
+    file = "checkpoint5.dat"
   )
   expect_equal(m, mean(x))
 
@@ -137,8 +150,9 @@ test_that("the checking of dependent variables can be disabled", {
     {
       mean(x)
     },
-    "test_checkpoint5",
-    1
+    "test_checkpoint",
+    1,
+    file = "checkpoint5.dat"
   )
   expect_false(m == mean(x))
 
@@ -146,17 +160,18 @@ test_that("the checking of dependent variables can be disabled", {
     {
       mean(x)
     },
-    "test_checkpoint5",
+    "test_checkpoint",
     2,
-    check.deps = FALSE
+    check.deps = FALSE,
+    file = "checkpoint5.dat"
   )
   expect_false(m == mean(x))
 })
 
 teardown({
-  unlink("test_checkpoint1.dat")
-  unlink("test_checkpoint2.dat")
-  unlink("test_checkpoint3.dat")
-  unlink("test_checkpoint4.dat")
-  unlink("test_checkpoint5.dat")
+  unlink("checkpoint1.dat")
+  unlink("checkpoint2.dat")
+  unlink("checkpoint3.dat")
+  unlink("checkpoint4.dat")
+  unlink("checkpoint5.dat")
 })

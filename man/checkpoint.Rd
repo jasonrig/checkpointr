@@ -5,7 +5,8 @@
 \title{Evaluates an expression or loads a previously checkpointed value}
 \usage{
 checkpoint(expr, ckpt.id, ..., force = FALSE, check.deps = TRUE,
-  envir = parent.frame(), enclos = environment())
+  envir = parent.frame(), enclos = environment(),
+  file = "checkpoint.dat")
 }
 \arguments{
 \item{expr}{any valid R expression}
@@ -21,6 +22,8 @@ checkpoint(expr, ckpt.id, ..., force = FALSE, check.deps = TRUE,
 \item{envir}{the environment in which \code{expr} is evaluated}
 
 \item{enclos}{the environment in which \code{expr} is substituted}
+
+\item{file}{the checkpoint file name}
 }
 \value{
 the result of running \code{expr} or the checkpointed value

@@ -7,7 +7,7 @@ This package will either load a stored result or evaluate the code if any of the
 * Any dependent variables have changed
 * The `force` parameter is set to `TRUE`
 
-Each checkpointed result is stored in a file named by adding ".dat" to the end of `ckpt.id` (see the R documentation using `?checkpointr::checkpoint` after installation for more information).
+See the R documentation using `?checkpointr::checkpoint` after installation for more information.
 
 ## Installation
 Installation depends on `devtools`, so once that's installed, the following command will fetch and install the checkpointr from git:
@@ -25,7 +25,7 @@ y <- checkpointr::checkpoint({
   42
 }, "test_checkpoint1")
 ```
-After running the code above, `y = 42`, `m = 50`, and `s = 29.30017`. These values will be stored in `test_checkpoint1.dat`. If this code were to be re-run, the expression inside the curly braces would be skipped.
+After running the code above, `y = 42`, `m = 50`, and `s = 29.30017`. These values will be stored in `checkpoint.dat`. If this code were to be re-run, the expression inside the curly braces would be skipped.
 
 The execution of the code can be further be triggered by changes to dependent variables:
 ```
