@@ -1,4 +1,4 @@
-Package: ckpt
+Package: checkpointr
 Type: Package
 Title: Checkpoint Variables
 Version: 0.1.0
