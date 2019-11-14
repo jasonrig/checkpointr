@@ -1,11 +1,11 @@
 #' Evaluates an expression or loads a cached value
 #'
 #' Both the change to the environment and the expression's return value is stored.
-#' The expression is re-evaluated if the expression or value of `deps` changes.
+#' The expression is re-evaluated if the expression or value of the dependent variables change.
 #'
 #' @param expr any valid R expression
 #' @param ckpt.id an identifier used for the checkpointed data
-#' @param deps any R object that is monitored for changed and is used to trigger re-evaluation
+#' @param ... any R object that is monitored for changed and is used to trigger re-evaluation
 #' @param force force re-evaluation of the expression regardless of the state of `deps` or `expr`
 #' @param envir the environment in which the expression is evaluated
 #' @param enclos the environment in which the expression is substituted
@@ -14,7 +14,7 @@
 checkpoint <-
   function(expr,
            ckpt.id,
-           deps = NA,
+           ...,
            force = FALSE,
            envir = parent.frame(),
            enclos = environment()) {
@@ -29,7 +29,7 @@ checkpoint <-
 
     # Calculate the hash used to determine whether a re-evaluation is necessary
     deps_hash <-
-      digest::digest(list(deps = deps, expr = deparse(expr)), "sha256")
+      digest::digest(list(deps = ..., expr = deparse(expr)), "sha256")
 
     if (!force && file.exists(ckpt_file)) {
       # Load the checkpoint if the checkpoint file exists
@@ -43,7 +43,7 @@ checkpoint <-
         return(checkpoint(
           expr,
           ckpt.id,
-          deps = deps,
+          ...,
           force = TRUE,
           envir = envir,
           enclos = enclos

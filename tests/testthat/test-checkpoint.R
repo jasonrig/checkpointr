@@ -29,18 +29,18 @@ test_that("the expression is re-evaluated when the dependent variables changes",
   x <- rnorm(100)
   m <- checkpoint({
     mean(x)
-  }, deps = 1, "test_checkpoint2")
+  }, "test_checkpoint2", 1)
   expect_equal(m, mean(x))
 
   x <- rnorm(100)
   m <- checkpoint({
     mean(x)
-  }, deps = 1, "test_checkpoint2")
+  }, "test_checkpoint2", 1)
   expect_false(m == mean(x))
 
   m <- checkpoint({
     mean(x)
-  }, deps = 2, "test_checkpoint2")
+  }, "test_checkpoint2", 2)
   expect_equal(m, mean(x))
 })
 

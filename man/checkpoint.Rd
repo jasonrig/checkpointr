@@ -4,15 +4,15 @@
 \alias{checkpoint}
 \title{Evaluates an expression or loads a cached value}
 \usage{
-checkpoint(expr, ckpt.id, deps = NA, force = FALSE,
-  envir = parent.frame(), enclos = environment())
+checkpoint(expr, ckpt.id, ..., force = FALSE, envir = parent.frame(),
+  enclos = environment())
 }
 \arguments{
 \item{expr}{any valid R expression}
 
 \item{ckpt.id}{an identifier used for the checkpointed data}
 
-\item{deps}{any R object that is monitored for changed and is used to trigger re-evaluation}
+\item{...}{any R object that is monitored for changed and is used to trigger re-evaluation}
 
 \item{force}{force re-evaluation of the expression regardless of the state of `deps` or `expr`}
 
@@ -25,5 +25,5 @@ the result of the expression
 }
 \description{
 Both the change to the environment and the expression's return value is stored.
-The expression is re-evaluated if the expression or value of `deps` changes.
+The expression is re-evaluated if the expression or value of the dependent variables change.
 }
