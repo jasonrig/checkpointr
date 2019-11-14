@@ -26,7 +26,7 @@ y <- checkpointr::checkpoint({
 }, "test_checkpoint1")
 ```
 After running the code above, `y = 42`, `m = 50`, and `s=29.30017`. These values will be stored in `test_checkpoint1.dat`.
-If this code were to be re-run, the expression inside the curly braces will be skipped.
+If this code were to be re-run, the expression inside the curly braces would be skipped.
 
 The execution of the code can be further be triggered by changes to dependent variables:
 ```
@@ -37,7 +37,6 @@ y <- checkpointr::checkpoint({
   42
 }, "test_checkpoint1", deps = x)
 ```
-In the sample code above, if the value of x changes from what was used during the initial checkpoint, the code in the braces
+In the sample code above, if the value of `x` changes from what was used during the initial checkpoint, the code in the braces
 will be re-evaluated and the checkpoint will be updated. Under the hood, the `deps` object is hashed and compared to the previously
-stored hash. This means that any R object can be used to define a dependent variable.
-here.
+stored hash. This means that any R object can be used to define a dependent variable here.
