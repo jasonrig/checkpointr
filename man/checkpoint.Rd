@@ -2,9 +2,7 @@
 % Please edit documentation in R/checkpoint.R
 \name{checkpoint}
 \alias{checkpoint}
-\title{Evaluates an expression or loads a cached value. Both the change to the environment
-and the expression's return value is stored.
-The expression is re-evaluated if the expression or value of `deps` changes.}
+\title{Evaluates an expression or loads a cached value}
 \usage{
 checkpoint(expr, ckpt.id, deps = NA, force = FALSE,
   envir = parent.frame(), enclos = environment())
@@ -26,7 +24,6 @@ checkpoint(expr, ckpt.id, deps = NA, force = FALSE,
 the result of the expression
 }
 \description{
-Evaluates an expression or loads a cached value. Both the change to the environment
-and the expression's return value is stored.
+Both the change to the environment and the expression's return value is stored.
 The expression is re-evaluated if the expression or value of `deps` changes.
 }

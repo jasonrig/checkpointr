@@ -1,6 +1,8 @@
-#' Evaluates an expression or loads a cached value. Both the change to the environment
-#' and the expression's return value is stored.
+#' Evaluates an expression or loads a cached value
+#'
+#' Both the change to the environment and the expression's return value is stored.
 #' The expression is re-evaluated if the expression or value of `deps` changes.
+#'
 #' @param expr any valid R expression
 #' @param ckpt.id an identifier used for the checkpointed data
 #' @param deps any R object that is monitored for changed and is used to trigger re-evaluation
