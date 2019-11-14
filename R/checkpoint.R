@@ -79,10 +79,9 @@ checkpoint <-
 #' @param ckpt.id the identifier to associate the environment with
 #' @param file the file that will contain the copy
 store.env <- function(envir, ckpt.id, file) {
+  cache <- list()
   if (file.exists(file)) {
-    load(file)
-  } else {
-    cache <- list()
+    load(file)  # This will populate `cache`
   }
 
   cache[[ckpt.id]] <- list()
@@ -104,11 +103,12 @@ store.env <- function(envir, ckpt.id, file) {
 #' @param ckpt.id the environment id to load
 #' @param file the file from which to load the environment
 restore.env <- function(envir, ckpt.id, file) {
-  if (!file.exists(file)) {
-    return()
+  cache <- list()
+
+  if (file.exists(file)) {
+    load(file)  # This will populate `cache`
   }
 
-  load(file)
   tmp_env <- new.env()
   ckpt <- cache[[ckpt.id]]
 
@@ -125,10 +125,11 @@ restore.env <- function(envir, ckpt.id, file) {
 #' @param file the checkpoint file to check
 #' @return TRUE if the checkpoint id exists, FALSE if not
 has.cache <- function(ckpt.id, file) {
+  cache <- list()
   if (!file.exists(file)) {
     return(FALSE)
   }
-  load(file)
+  load(file)  # This will populate `cache`
   return(ckpt.id %in% names(cache))
 }
 
