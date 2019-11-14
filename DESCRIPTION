@@ -6,7 +6,7 @@ Author: Jason Rigby <hello@jasonrig.by>
 Maintainer: Jason Rigby <hello@jasonrig.by>
 Description: Stores checkpointed variables to make long-running scripts
     restartable.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:

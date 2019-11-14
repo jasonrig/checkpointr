@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkpoint.R
 \name{checkpoint}
 \alias{checkpoint}
-\title{Evaluates an expression or loads a cached value}
+\title{Evaluates an expression or loads a previously checkpointed value}
 \usage{
 checkpoint(expr, ckpt.id, ..., force = FALSE, envir = parent.frame(),
   enclos = environment())
@@ -12,18 +12,21 @@ checkpoint(expr, ckpt.id, ..., force = FALSE, envir = parent.frame(),
 
 \item{ckpt.id}{an identifier used for the checkpointed data}
 
-\item{...}{any R object that is monitored for changed and is used to trigger re-evaluation}
+\item{...}{any one or more R objects that are monitored for changes and used to trigger re-evaluation}
 
-\item{force}{force re-evaluation of the expression regardless of the state of `deps` or `expr`}
+\item{force}{force re-evaluation of the expression}
 
-\item{envir}{the environment in which the expression is evaluated}
+\item{envir}{the environment in which \code{expr} is evaluated}
 
-\item{enclos}{the environment in which the expression is substituted}
+\item{enclos}{the environment in which \code{expr} is substituted}
 }
 \value{
-the result of the expression
+the result of running \code{expr} or the checkpointed value
 }
 \description{
 Both the change to the environment and the expression's return value is stored.
 The expression is re-evaluated if the expression or value of the dependent variables change.
+}
+\examples{
+checkpointr::checkpoint({x <- 42}, "checkpoint1")
 }

@@ -1,15 +1,17 @@
-#' Evaluates an expression or loads a cached value
+#' Evaluates an expression or loads a previously checkpointed value
 #'
 #' Both the change to the environment and the expression's return value is stored.
 #' The expression is re-evaluated if the expression or value of the dependent variables change.
 #'
 #' @param expr any valid R expression
 #' @param ckpt.id an identifier used for the checkpointed data
-#' @param ... any R object that is monitored for changed and is used to trigger re-evaluation
-#' @param force force re-evaluation of the expression regardless of the state of `deps` or `expr`
-#' @param envir the environment in which the expression is evaluated
-#' @param enclos the environment in which the expression is substituted
-#' @return the result of the expression
+#' @param ... any one or more R objects that are monitored for changes and used to trigger re-evaluation
+#' @param force force re-evaluation of the expression
+#' @param envir the environment in which \code{expr} is evaluated
+#' @param enclos the environment in which \code{expr} is substituted
+#' @return the result of running \code{expr} or the checkpointed value
+#' @examples
+#' checkpointr::checkpoint({x <- 42}, "checkpoint1")
 #' @export
 checkpoint <-
   function(expr,
