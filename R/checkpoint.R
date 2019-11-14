@@ -59,8 +59,7 @@ checkpoint <-
       save(
         list = ls(tmp_env, all.names = TRUE),
         envir = tmp_env,
-        file = ckpt_file,
-        ascii = TRUE
+        file = ckpt_file
       )
     }
 
