@@ -4,16 +4,16 @@
 \alias{checkpoint}
 \title{Evaluates an expression or loads a previously checkpointed value}
 \usage{
-checkpoint(expr, ckpt.id, ..., force = FALSE, check.deps = TRUE,
-  envir = parent.frame(), enclos = environment(),
+checkpoint(expr, ..., ckpt.id = NULL, force = FALSE,
+  check.deps = TRUE, envir = parent.frame(), enclos = environment(),
   file = "checkpoint.dat")
 }
 \arguments{
 \item{expr}{any valid R expression}
 
-\item{ckpt.id}{an identifier used for the checkpointed data}
-
 \item{...}{any one or more R objects that are monitored for changes and used to trigger re-evaluation}
+
+\item{ckpt.id}{an identifier used for the checkpointed data}
 
 \item{force}{force re-evaluation of the expression}
 
@@ -33,5 +33,10 @@ Both the change to the environment and the expression's return value is stored.
 The expression is re-evaluated if the expression or value of the dependent variables change.
 }
 \examples{
-checkpointr::checkpoint({x <- 42}, "checkpoint1")
+checkpointr::checkpoint(
+  {
+    x <- 42
+  },
+  "checkpoint1"
+)
 }

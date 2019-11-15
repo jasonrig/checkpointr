@@ -4,8 +4,8 @@
 #' The expression is re-evaluated if the expression or value of the dependent variables change.
 #'
 #' @param expr any valid R expression
-#' @param ckpt.id an identifier used for the checkpointed data
 #' @param ... any one or more R objects that are monitored for changes and used to trigger re-evaluation
+#' @param ckpt.id an identifier used for the checkpointed data
 #' @param force force re-evaluation of the expression
 #' @param check.deps whether or not to check the dependent variables in \code{...} for changes
 #' @param envir the environment in which \code{expr} is evaluated
@@ -13,12 +13,17 @@
 #' @param file the checkpoint file name
 #' @return the result of running \code{expr} or the checkpointed value
 #' @examples
-#' checkpointr::checkpoint({x <- 42}, "checkpoint1")
+#' checkpointr::checkpoint(
+#'   {
+#'     x <- 42
+#'   },
+#'   "checkpoint1"
+#' )
 #' @export
 checkpoint <-
   function(expr,
-           ckpt.id,
            ...,
+           ckpt.id = NULL,
            force = FALSE,
            check.deps = TRUE,
            envir = parent.frame(),
@@ -35,6 +40,16 @@ checkpoint <-
     deps_hash <-
       digest::digest(list(deps = ..., expr = deparse(expr)), "sha256")
 
+    # A default checkpoint id is set if none is provided.
+    # It is created from a hash of the expression alone with the deparsed dependency arguments
+    ckpt.id <- ifelse(is.null(ckpt.id), digest::digest(
+      list(
+        expr = deparse(expr),
+        deps = deparse(substitute(list(...)))
+      ),
+      "sha256"
+    ), ckpt.id)
+
     if (!force && has.cache(ckpt.id, file)) {
       # Load the checkpoint if the checkpoint file exists
       message(paste0("Loading checkpoint ", ckpt.id, "."))
@@ -46,8 +61,8 @@ checkpoint <-
         message("Dependent variables have changed!")
         return(checkpoint(
           expr,
-          ckpt.id,
           ...,
+          ckpt.id = ckpt.id,
           force = TRUE,
           envir = envir,
           enclos = enclos,
@@ -81,7 +96,7 @@ checkpoint <-
 store.env <- function(envir, ckpt.id, file) {
   cache <- list()
   if (file.exists(file)) {
-    load(file)  # This will populate `cache`
+    load(file) # This will populate `cache`
   }
 
   cache[[ckpt.id]] <- list()
@@ -106,7 +121,7 @@ restore.env <- function(envir, ckpt.id, file) {
   cache <- list()
 
   if (file.exists(file)) {
-    load(file)  # This will populate `cache`
+    load(file) # This will populate `cache`
   }
 
   tmp_env <- new.env()
@@ -129,7 +144,7 @@ has.cache <- function(ckpt.id, file) {
   if (!file.exists(file)) {
     return(FALSE)
   }
-  load(file)  # This will populate `cache`
+  load(file) # This will populate `cache`
   return(ckpt.id %in% names(cache))
 }
 

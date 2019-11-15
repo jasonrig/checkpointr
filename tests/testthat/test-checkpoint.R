@@ -8,7 +8,7 @@ test_that("data that is checkpointed can be loaded again", {
       s <- sd(x)
       42
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint1.dat"
   )
   expect_equal(y, 42)
@@ -23,7 +23,7 @@ test_that("data that is checkpointed can be loaded again", {
       s <- sd(x)
       42
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint1.dat"
   )
   expect_equal(y, 42)
@@ -37,8 +37,8 @@ test_that("the expression is re-evaluated when the dependent variables changes",
     {
       mean(x)
     },
-    "test_checkpoint",
     1,
+    ckpt.id = "test_checkpoint",
     file = "checkpoint2.dat"
   )
   expect_equal(m, mean(x))
@@ -48,8 +48,8 @@ test_that("the expression is re-evaluated when the dependent variables changes",
     {
       mean(x)
     },
-    "test_checkpoint",
     1,
+    ckpt.id = "test_checkpoint",
     file = "checkpoint2.dat"
   )
   expect_false(m == mean(x))
@@ -58,8 +58,8 @@ test_that("the expression is re-evaluated when the dependent variables changes",
     {
       mean(x)
     },
-    "test_checkpoint",
     2,
+    ckpt.id = "test_checkpoint",
     file = "checkpoint2.dat"
   )
   expect_equal(m, mean(x))
@@ -71,7 +71,7 @@ test_that("the expression is re-evaluated when the expression changes", {
     {
       mean(x)
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint3.dat"
   )
   expect_equal(m, mean(x))
@@ -82,7 +82,7 @@ test_that("the expression is re-evaluated when the expression changes", {
     {
       mean(x)
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint3.dat"
   )
   expect_false(m == mean(x))
@@ -91,7 +91,7 @@ test_that("the expression is re-evaluated when the expression changes", {
     {
       mean(y)
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint3.dat"
   )
   expect_equal(m, mean(x))
@@ -102,21 +102,21 @@ test_that("the expression can be forcefully re-evaluated", {
     {
       rnorm(100)
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint4.dat"
   )
   m2 <- checkpoint(
     {
       rnorm(100)
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint4.dat"
   )
   m3 <- checkpoint(
     {
       rnorm(100)
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     force = TRUE,
     file = "checkpoint4.dat"
   )
@@ -124,7 +124,7 @@ test_that("the expression can be forcefully re-evaluated", {
     {
       rnorm(100)
     },
-    "test_checkpoint",
+    ckpt.id = "test_checkpoint",
     file = "checkpoint4.dat"
   )
 
@@ -139,8 +139,8 @@ test_that("the checking of dependent variables can be disabled", {
     {
       mean(x)
     },
-    "test_checkpoint",
     1,
+    ckpt.id = "test_checkpoint",
     file = "checkpoint5.dat"
   )
   expect_equal(m, mean(x))
@@ -150,8 +150,8 @@ test_that("the checking of dependent variables can be disabled", {
     {
       mean(x)
     },
-    "test_checkpoint",
     1,
+    ckpt.id = "test_checkpoint",
     file = "checkpoint5.dat"
   )
   expect_false(m == mean(x))
@@ -160,12 +160,48 @@ test_that("the checking of dependent variables can be disabled", {
     {
       mean(x)
     },
-    "test_checkpoint",
     2,
+    ckpt.id = "test_checkpoint",
     check.deps = FALSE,
     file = "checkpoint5.dat"
   )
   expect_false(m == mean(x))
+})
+
+test_that("checkpoints set a sensible default id", {
+  dep_var <- 1
+  x <- rnorm(100)
+  m <- checkpoint(
+    {
+      mean(x)
+    },
+    dep_var,
+    file = "checkpoint6.dat"
+  )
+  expect_equal(m, mean(x))
+
+  x <- rnorm(100)
+  m <- checkpoint(
+    {
+      mean(x)
+    },
+    dep_var,
+    file = "checkpoint6.dat"
+  )
+  expect_false(m == mean(x))
+
+  dep_var <- 2
+  m <- checkpoint(
+    {
+      mean(x)
+    },
+    dep_var,
+    file = "checkpoint6.dat"
+  )
+  expect_equal(m, mean(x))
+
+  load("checkpoint6.dat")
+  expect_length(names(cache), 1)
 })
 
 teardown({
@@ -174,4 +210,5 @@ teardown({
   unlink("checkpoint3.dat")
   unlink("checkpoint4.dat")
   unlink("checkpoint5.dat")
+  unlink("checkpoint6.dat")
 })
